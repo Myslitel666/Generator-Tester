@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { TextField, Button } from "svelte-elegant";
   import { themeStore } from "svelte-elegant/stores";
 
@@ -16,7 +16,7 @@
     { face: "⚅", value: 0 },
   ];
 
-  let serialResults = [[[...diceResults]]];
+  let serialResults: { dice: String; value: String }[] = [];
 
   let experiments = "100";
   let series = "4";
@@ -27,7 +27,7 @@
   }
 
   function clearSeries() {
-    serialResults = [[[...diceResults]]];
+    serialResults = [];
   }
 
   function clearDice() {
@@ -48,6 +48,8 @@
       }
       // ГЛУБОКОЕ КОПИРОВАНИЕ объектов
       serialResults.push(JSON.parse(JSON.stringify(diceResults)));
+
+      console.log(serialResults);
     }
   }
 </script>
@@ -65,10 +67,12 @@
   </div>
   {#if isGenerated}
     <div class="result">
-      {#each diceResults as result}
+      {#each diceResults as result, i}
         <div>
           <div class="dice">{result.face}</div>
-          <div class="value">{result.value}</div>
+          {#each serialResults as seria}
+            <div class="value">{seria[i].value}</div>
+          {/each}
         </div>
       {/each}
     </div>
