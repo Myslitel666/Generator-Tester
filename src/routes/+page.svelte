@@ -17,6 +17,7 @@
   ];
 
   let serialResults: { dice: String; value: String }[] = [];
+  let delta: Number[] = [];
 
   let experiments = "100";
   let series = "4";
@@ -28,12 +29,18 @@
 
   function clearSeries() {
     serialResults = [];
+    delta = [];
   }
 
   function clearDice() {
     for (let i = 0; i < diceResults.length; i++) {
       diceResults[i].value = 0;
     }
+  }
+
+  function formatNumber(value) {
+    if (Number.isInteger(value)) return `${value}%`;
+    return `${value.toFixed(1).replace(".", ",")}%`;
   }
 
   function generate() {
@@ -49,7 +56,13 @@
       // ГЛУБОКОЕ КОПИРОВАНИЕ объектов
       serialResults.push(JSON.parse(JSON.stringify(diceResults)));
 
-      console.log(serialResults);
+      const serialValues = diceResults.map((d) => d.value);
+      const idealOutcome = Number(experiments) / 6;
+      for (let i = 0; i < serialValues.length; i++) {
+        serialValues[i] = Math.abs(idealOutcome - serialValues[i]);
+      }
+      const avg = serialValues.reduce((a, b) => a + b, 0) / serialValues.length;
+      delta.push((avg / idealOutcome) * 100);
     }
   }
 </script>
@@ -79,8 +92,8 @@
         <div class="dice" style:font-size="16px" style:font-weight="600">
           Avg. Δ
         </div>
-        {#each serialResults as seria}
-          <div class="value">{seria[0].value}</div>
+        {#each delta as d}
+          <div class="value">{formatNumber(d)}</div>
         {/each}
       </div>
     </div>
