@@ -27,7 +27,7 @@
   }
 
   function clearSeries() {
-    let serialResults = [[[...diceResults]]];
+    serialResults = [[[...diceResults]]];
   }
 
   function clearDice() {
