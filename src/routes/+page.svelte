@@ -16,6 +16,8 @@
     { face: "⚅", value: 0 },
   ];
 
+  let serialResults = [[[...diceResults]]];
+
   let experiments = "100";
   let series = "4";
   let isGenerated = false;
@@ -24,12 +26,28 @@
     return Math.floor(Math.random() * 6) + 1;
   }
 
+  function clearSeries() {
+    let serialResults = [[[...diceResults]]];
+  }
+
+  function clearDice() {
+    for (let i = 0; i < diceResults.length; i++) {
+      diceResults[i].value = 0;
+    }
+  }
+
   function generate() {
     isGenerated = true;
-    // Выбираем случайный ответ
-    for (let i = 0; i < Number(experiments); i++) {
-      const roll = generateDice();
-      diceResults[roll - 1].value = diceResults[roll - 1].value + 1;
+    clearSeries();
+    // Генерируем броски кубика
+    for (let j = 0; j < Number(series); j++) {
+      clearDice();
+      for (let i = 0; i < Number(experiments); i++) {
+        const roll = generateDice();
+        diceResults[roll - 1].value++;
+      }
+      // ГЛУБОКОЕ КОПИРОВАНИЕ объектов
+      serialResults.push(JSON.parse(JSON.stringify(diceResults)));
     }
   }
 </script>
@@ -75,6 +93,7 @@
   }
 
   .dice {
+    text-align: center;
     font-size: 36px;
   }
 
