@@ -8,20 +8,29 @@
   });
 
   const diceResults = [
-    { face: "⚀", value: 12 },
-    { face: "⚁", value: 567 },
-    { face: "⚂", value: 344 },
-    { face: "⚃", value: 12 },
-    { face: "⚄", value: 567 },
-    { face: "⚅", value: 344 },
+    { face: "⚀", value: 0 },
+    { face: "⚁", value: 0 },
+    { face: "⚂", value: 0 },
+    { face: "⚃", value: 0 },
+    { face: "⚄", value: 0 },
+    { face: "⚅", value: 0 },
   ];
 
   let experiments = "100";
   let series = "4";
+  let isGenerated = false;
 
-  function generateAnswer() {
+  function generateDice() {
+    return Math.floor(Math.random() * 6) + 1;
+  }
+
+  function generate() {
+    isGenerated = true;
     // Выбираем случайный ответ
-    //const randomIndex = Math.floor(Math.random() * inputs.length);
+    for (let i = 0; i < Number(experiments); i++) {
+      const roll = generateDice();
+      diceResults[roll - 1].value = diceResults[roll - 1].value + 1;
+    }
   }
 </script>
 
@@ -34,16 +43,18 @@
       type="number"
     />
     <TextField label="Series" bind:value={series} width="100%" type="number" />
-    <Button width="100%" onclick={generateAnswer}>Generate</Button>
+    <Button width="100%" onclick={generate}>Generate</Button>
   </div>
-  <div class="result">
-    {#each diceResults as result}
-      <div>
-        <div class="dice">{result.face}</div>
-        <div class="value">{result.value}</div>
-      </div>
-    {/each}
-  </div>
+  {#if isGenerated}
+    <div class="result">
+      {#each diceResults as result}
+        <div>
+          <div class="dice">{result.face}</div>
+          <div class="value">{result.value}</div>
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
