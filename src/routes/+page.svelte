@@ -17,7 +17,8 @@
   ];
 
   let serialResults: { dice: String; value: String }[] = [];
-  let delta: Number[] = [];
+  let delta: number[] = [];
+  let resultDelta = 0;
 
   let experiments = "100";
   let series = "4";
@@ -64,6 +65,8 @@
       const avg = serialValues.reduce((a, b) => a + b, 0) / serialValues.length;
       delta.push((avg / idealOutcome) * 100);
     }
+
+    resultDelta = delta.reduce((a, b) => a + b, 0) / delta.length;
   }
 </script>
 
@@ -79,6 +82,8 @@
     <Button width="100%" onclick={generate}>Generate</Button>
   </div>
   {#if isGenerated}
+    <div style:font-weight="600">Average Delta</div>
+    <div style:font-size="32px">{formatNumber(resultDelta)}</div>
     <div class="result">
       {#each diceResults as result, i}
         <div>
