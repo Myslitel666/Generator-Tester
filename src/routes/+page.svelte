@@ -75,6 +75,14 @@
           {/each}
         </div>
       {/each}
+      <div>
+        <div class="dice" style:font-size="16px" style:font-weight="600">
+          Avg. Δ
+        </div>
+        {#each serialResults as seria}
+          <div class="value">{seria[0].value}</div>
+        {/each}
+      </div>
     </div>
   {/if}
 </div>
@@ -90,15 +98,18 @@
 
   .result {
     display: flex;
-    margin-top: -12px;
+    margin-top: -8px;
     user-select: none;
     pointer-events: none;
     gap: 7px;
   }
 
   .dice {
-    text-align: center;
     font-size: 36px;
+    height: 42px;
+    display: flex; /* ← ДОБАВЬ ЭТО */
+    align-items: center; /* ← ВЕРТИКАЛЬНОЕ ВЫРАВНИВАНИЕ */
+    justify-content: center; /* ← ГОРИЗОНТАЛЬНОЕ ВЫРАВНИВАНИЕ */
   }
 
   .value {
